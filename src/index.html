@@ -10,20 +10,37 @@
       integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
       crossorigin="anonymous"
     />
+    <link href="style.css" type="text/css" />
     <link rel="shortcut icon" href="./4geeks.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
   </head>
+
   <body>
-    <div class="container-fluid text-center">
-      <h1 class="mt-5">Hello Rigo!</h1>
-      <img src="./rigo-baby.jpg" />
-      <p class="alert alert-warning mt-4">
-        If this text is <b>not</b> centered and <b>yellow</b>, you probably have
-        an error
-      </p>
-      <div class="fixed-bottom p-4">
-        Made with ❤️ by
-        <a href="https://www.4geeksacademy.com">4Geeks Academy</a>
+    <div class="container">
+      <div class="menu">
+        <p>Original:</p>
+        <input type="number" value="3" placeholder="1" />
+        <button id="button">Draw</button>
+        <button id="sort">Sort</button>
+      </div>
+      <div class="card-container">
+        <!-- WHERE THE CARDS GOES -->
+      </div>
+      <h2>Select Sort Log:</h2>
+      <div class="order-container">
+        <!-- WHERE THE ORDER CARDS GOES -->
       </div>
     </div>
+
+    <script
+      src="https://kit.fontawesome.com/072e5df971.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="app.js"></script>
   </body>
 </html>

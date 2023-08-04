@@ -1,1 +1,98 @@
-@import "~bootstrap/dist/css/bootstrap.min.css";
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  border: none;
+  outline: none;
+}
+html {
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  min-height: 100%;
+  background-color: green;
+  font-size: 20px;
+}
+
+.container {
+  margin: 20px 100px 0;
+}
+
+.menu {
+  display: flex;
+  height: 60px;
+  justify-content: center;
+}
+
+.menu p,
+.menu input,
+.menu button {
+  margin-right: 16px;
+  height: 40px;
+}
+
+.menu p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu input {
+  padding-left: 8px;
+}
+
+.menu button {
+  padding: 0 12px;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  width: 90px;
+  height: 110px;
+  background-color: rgba(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 4px 4px 14px 0px black;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.card i {
+  font-size: 20px;
+}
+
+.card-header i {
+  margin-left: 8px;
+}
+
+.card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 33%;
+}
+
+.card-footer i {
+  transform: rotate(180deg);
+  margin-right: 8px;
+}
+
+.select-sort {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
