@@ -13,12 +13,13 @@ html {
 
 body {
   min-height: 100%;
-  background-color: green;
+  background-color: rgba(0, 0, 0, 0.9);
   font-size: 20px;
+  color: white;
 }
 
 .container {
-  margin: 20px 100px 0;
+  margin: 20px 20px 0;
 }
 
 .menu {
@@ -77,6 +78,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 }
 
 .card-footer {
@@ -91,7 +93,18 @@ body {
   margin-right: 8px;
 }
 
-.select-sort {
+h2 {
+  margin: 12px 0;
+}
+
+.order-iterations {
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.order-container {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 20px;

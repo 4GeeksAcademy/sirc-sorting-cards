@@ -1,129 +1,123 @@
 /* eslint-disable */
 import "./style.css";
 
+let cards = []; // CONTAINS ALL THE CARDS
+
 let iconsArray = ["fa-clover", "fa-spa", "fa-heart", "fa-diamond"];
-// let numbersAndLetter = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
 let numbers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1];
 let letters = { J: 11, Q: 12, K: 13, A: 1 };
 
-let cards = []; // CONTAINS ALL THE CARDS
+// ----- MAKE CARD CONTAINER BIGGER OR SMALLER ---------
+
+const modifyGridSystem = inputValue => {
+  document
+    .querySelector(".order-container")
+    .style.setProperty(
+      "grid-template-columns",
+      "repeat(" + (inputValue + 1) + ", 1fr)"
+    ); // ORDER CONTAINER
+  if (inputValue >= 12) inputValue = Math.floor(inputValue / 2);
+  if (inputValue <= 4) inputValue *= 2;
+  document
+    .querySelector(".card-container")
+    .style.setProperty(
+      "grid-template-columns",
+      "repeat(" + inputValue + ", 1fr)"
+    ); // CARD CONTAINER
+};
+
+// ----- FUNCTIONS TO GET CARD DATA ---------
 
 const getRandomNumber = (max, min) =>
   Math.floor(Math.random() * (max - min) + min);
-
-// FUNCTIONS TO GET CARD DATA
-
-const getColor = icon => {
-  let numbersOfIcons = 2;
-  let color = "";
-  for (let i = 0; i < numbersOfIcons; i++) {
-    icon === "fa-clover" || icon === "fa-spa"
-      ? (color = "black")
-      : (color = "red");
-  }
-  return color;
-};
-
 const getIcon = () => iconsArray[getRandomNumber(0, iconsArray.length)];
 const getNumberOrLetter = () => numbers[getRandomNumber(0, numbers.length)];
+const getColor = icon =>
+  icon === "fa-clover" || icon === "fa-spa" ? "black" : "red";
 
-// GETTING CARD INFO
+// ----- GETTING CARD INFO ---------
 
-const createGeneratedCard = () => {
-  const icon = getIcon();
-  const color = getColor(icon);
-  const number = getNumberOrLetter();
+const createGeneratedCard = inputValue => {
+  cards = [];
+  for (let i = 0; i < inputValue; i++) {
+    const icon = getIcon();
+    const color = getColor(icon);
+    const number = getNumberOrLetter();
 
-  return { icon, color, number };
+    cards.push({ icon, color, number });
+  }
+  showCards(cards, "card-container"); // SHOW RANDOM CARDS
 };
 
-// SHOW CARD
+// ----- PUT IN AN HTML TEMPLATE ---------
 
-const showGeneratedCard = () => {
-  let cardContainer = document.querySelector(".card-container");
-  let cardsHTML = "";
+const getCardsHTML = (icon, color, number) => `
+  <div class="card">
+		<header class="card-header">
+			<i class="fa-solid ${icon}" style="color: ${color};"></i>
+		</header>
+		<article class="card-body">
+			<p id="face">${number}</p>
+		</article>
+		<footer class="card-footer">
+			<i class="fa-solid ${icon}" style="color: ${color};"></i>
+		</footer>
+  </div>
+`;
 
-  cards = []; // CLEANING CARDS ARRAY
+// ----- SHOW CARD ---------
 
-  // GENERATE CARDS
-  const inputValue = Number(document.getElementsByTagName("input")[0].value);
-  for (let i = 0; i < inputValue; i++) cards.push(createGeneratedCard());
+let cardHTML = "";
 
-  for (let i = 0; i < cards.length; i++) {
-    const { icon, color, number } = cards[i];
+const showCards = (array, container) => {
+  if (container === "card-container") cardHTML = "";
+  for (let i = 0; i < array.length; i++) {
+    const { icon, color, number } = array[i];
 
     // CHECK IF THE NUMBER IS EQUAL TO A LETTER
     for (let letter in letters) {
       if (number == letters[letter]) number = letter;
     }
 
-    cardsHTML += `
-			<div class="card">
-				<header class="card-header">
-					<i class="fa-solid ${icon}" style="color: ${color};"></i>
-				</header>
-				<article class="card-body">
-					<p id="face">${number}</p>
-				</article>
-				<footer class="card-footer">
-					<i class="fa-solid ${icon}" style="color: ${color};"></i>
-				</footer>
-			</div>
-		`;
+    // GET HTML OF THE CARD
+    cardHTML += getCardsHTML(icon, color, number);
   }
-
-  cardContainer.innerHTML = cardsHTML;
+  let cardContainer = document.querySelector(`.${container}`);
+  cardContainer.innerHTML = "";
+  cardContainer.innerHTML = cardHTML;
 };
 
-/* AÚN NO PUEDO COMPLETAR EL ORDER CARDS */
+// ----- ORDER CARTS ---------
 
-const orderCards = (arr = cards) => {
-  let min = 0;
-  while (min < arr.length - 1) {
-    for (let i = min + 1; i < arr.length - 1; i++) {
-      if (arr[min] > arr[i]) {
-        let aux = arr[min];
-        arr[min] = arr[i];
-        arr[i] = aux;
+const orderCards = () => {
+  cardHTML = "";
+
+  let array = cards.slice();
+  let wall = 0;
+  while (wall < array.length) {
+    for (let i = wall + 1; i < array.length; i++) {
+      const left = array[wall];
+      const right = array[i];
+      if (left.number > right.number) {
+        array[wall] = right;
+        array[i] = left;
       }
     }
-    min++;
+    cardHTML += `<p class="order-iterations">${wall + 1}</p>`;
+    showCards(array, "order-container"); // SHOW ORDER CARDS
+    wall++;
   }
-  return arr;
 };
 
-const showOrderCards = () => {
-  let orderContainer = document.querySelector(".order-container");
-  let orderCardsHTML = `<div class="select-sort"></div>`;
+// ----- ADD EVENTS ---------
 
-  let text = "";
-  for (let i = 0; i < cards.length; i++) {
-    const { icon, color, number } = cards[i];
+document.getElementById("draw").addEventListener("click", () => {
+  document.querySelector(".order-container").innerHTML = ""; // CLEAN ORDER CONTAINER
+  const inputValue = Number(document.getElementById("amountOfCards").value); // INPUT AMOUNT OF CARDS
+  createGeneratedCard(inputValue); // CREATE CARDS
+  modifyGridSystem(inputValue); // CREATE COLUMNS
+});
 
-    // CHECK IF THE NUMBER IS EQUAL TO A LETTER
-    for (let letter in letters) if (number == letters[letter]) number = letter;
-
-    text += `
-      <div class="card">
-        <header class="card-header">
-          <i class="fa-solid ${icon}" style="color: ${color};"></i>
-        </header>
-        <article class="card-body">
-          <p id="face">${number}</p>
-        </article>
-        <footer class="card-footer">
-          <i class="fa-solid ${icon}" style="color: ${color};"></i>
-        </footer>
-      </div>
-		`;
-  }
-  orderContainer.innerHTML = orderCardsHTML;
-  document.querySelector(".select-sort").innerHTML = text;
-};
-
-document.getElementById("button").addEventListener("click", () => {
-  showGeneratedCard();
-  orderCards();
-  showOrderCards();
-  console.log(cards);
+document.getElementById("sort").addEventListener("click", () => {
+  orderCards(); // ORDER CARDS
 });
